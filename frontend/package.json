@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "node test-part2-verification.mjs && node test-part2-dom-verification.mjs && node test-part3-verification.mjs && node test-part3-dom-verification.mjs && node test-part4-e2e-integration.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
