@@ -1,0 +1,446 @@
+/**
+ * responsive.css - Responsive Media Queries and Mobile Layout Adaptations
+ * Hashmat Uddin High School Admission Portal
+ */
+
+/* =========================================================================
+ * Large Tablets & Laptops (<= 1024px)
+ * ========================================================================= */
+@media (max-width: 1024px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .hero-visual {
+    order: -1;
+    justify-content: flex-start;
+  }
+
+  .hero-card-stack {
+    max-width: 100%;
+  }
+
+  .overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-classes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .class-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  .footer-col-brand {
+    grid-column: span 2;
+  }
+
+  .authority-layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hub-modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .public-class-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-box-sticky {
+    position: static;
+  }
+}
+
+/* =========================================================================
+ * Mobile & Small Tablets (<= 768px)
+ * ========================================================================= */
+@media (max-width: 768px) {
+  .shift-times-grid {
+    grid-template-columns: 1fr;
+  }
+  .authority-header-container {
+    height: auto;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .authority-brand-col {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .authority-nav {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .authority-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+
+  .authority-landing-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .authority-top-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-6);
+  }
+
+  .admin-dates-panel {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .create-class-form-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .create-class-card {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .hub-modules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-hero-matrix {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .class-hero-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-container {
+    height: 64px;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .site-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-default);
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-6);
+    gap: var(--space-6);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-120%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform var(--transition-normal), opacity var(--transition-normal), visibility var(--transition-normal);
+    z-index: 99;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+
+  .site-nav.nav-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  .nav-link {
+    display: block;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 1.0625rem;
+  }
+
+  .nav-link.active {
+    background-color: var(--primary-50);
+    color: var(--primary-800);
+  }
+
+  .nav-link.active::after {
+    display: none;
+  }
+
+  .nav-student-area {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-light);
+    justify-content: center;
+  }
+
+  .hero-title {
+    font-size: 2.25rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-highlights {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-classes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header-split {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .filter-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-search-col,
+  .filter-select-col,
+  .filter-action-col {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .filter-action-col .btn {
+    width: 100%;
+  }
+
+  .applicant-cta-box {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-6);
+  }
+
+  .applicant-cta-box .btn {
+    width: 100%;
+  }
+
+  .page-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .countdown-timer-large {
+    font-size: 3.25rem;
+  }
+
+  .details-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .details-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .counts-grid-four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .specs-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-classes-banner {
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    gap: var(--space-2);
+    flex-direction: column;
+  }
+
+  .academic-classes-banner .chip-separator {
+    display: none;
+  }
+
+  .app-card-header {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .app-card-timer-box {
+    width: 100%;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .footer-col-brand {
+    grid-column: span 1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .authority-hero-row {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .slip-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+}
+
+/* =========================================================================
+ * Extra Small Screens (<= 480px)
+ * ========================================================================= */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.875rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .page-title {
+    font-size: 1.625rem;
+  }
+
+  .countdown-timer-large {
+    font-size: 2.75rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-hero-matrix {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-verify-card {
+    padding: var(--space-6);
+  }
+
+  .modal-dialog {
+    margin: var(--space-2);
+    max-height: 90vh;
+  }
+
+  .modal-body {
+    padding: var(--space-4);
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  .toast-container {
+    right: var(--space-2);
+    left: var(--space-2);
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+/* =========================================================================
+ * Print Stylesheet (Admission Slip & Certificate)
+ * ========================================================================= */
+@media print {
+  body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .site-header,
+  .site-footer,
+  .authority-header,
+  .details-actions-bar,
+  .page-header-wrapper .page-breadcrumbs,
+  .page-header-wrapper .btn,
+  .toast-container {
+    display: none !important;
+  }
+
+  .admission-slip-box {
+    border: 2px solid #000000;
+    box-shadow: none;
+    margin: 0;
+    padding: 20px;
+    page-break-inside: avoid;
+  }
+
+  .details-card {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
