@@ -33,3 +33,4 @@ export function AuthorityStatisticsPage() {
 }
 
 export default AuthorityStatisticsPage;
+

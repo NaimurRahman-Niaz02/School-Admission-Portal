@@ -72,3 +72,4 @@ export function AdmissionGuidelines() {
 }
 
 export default AdmissionGuidelines;
+

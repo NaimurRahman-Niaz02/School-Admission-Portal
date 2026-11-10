@@ -79,3 +79,4 @@ export const admissionConfig = {
 };
 
 export default admissionConfig;
+

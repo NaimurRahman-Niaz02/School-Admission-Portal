@@ -33,3 +33,4 @@ export function AuthorityCreateClassPage() {
 }
 
 export default AuthorityCreateClassPage;
+

@@ -29,3 +29,4 @@ export const schoolConfig = {
 };
 
 export default schoolConfig;
+

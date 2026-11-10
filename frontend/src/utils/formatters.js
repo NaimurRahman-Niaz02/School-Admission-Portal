@@ -96,7 +96,7 @@ export function formatDhms(ms) {
  */
 export function getHoldDurationSeconds() {
   try {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.location?.href) {
       const fullUrl = window.location.href || '';
       const match = fullUrl.match(/[?&]holdSeconds=(\d+)/);
       if (match && match[1]) {
@@ -106,8 +106,8 @@ export function getHoldDurationSeconds() {
         }
       }
     }
-  } catch (e) {
-    console.warn('Error reading hold duration param:', e);
+  } catch {
+    // ignore
   }
   return 600; // 10 minutes default
 }
@@ -129,3 +129,4 @@ export function generateApplicationCode() {
   const rand = Math.floor(100000 + Math.random() * 900000);
   return `HUHS-${year}-${rand}`;
 }
+

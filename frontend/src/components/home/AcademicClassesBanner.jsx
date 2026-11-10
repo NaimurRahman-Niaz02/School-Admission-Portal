@@ -57,3 +57,4 @@ export function AcademicClassesBanner() {
 }
 
 export default AcademicClassesBanner;
+
