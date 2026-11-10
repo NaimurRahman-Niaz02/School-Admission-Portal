@@ -101,3 +101,4 @@ export function CancelReservationModal({ isOpen, hold, onClose, onConfirm }) {
 }
 
 export default CancelReservationModal;
+

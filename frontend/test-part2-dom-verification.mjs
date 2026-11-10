@@ -147,3 +147,4 @@ it('ApplicationDetailsPage integrates PaymentModal and CancelReservationModal', 
 console.log(`\n======================================================`);
 console.log(`Part 2 Component Inspection Complete: ${passed}/${total} checks passed!`);
 console.log(`======================================================\n`);
+
