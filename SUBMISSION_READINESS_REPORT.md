@@ -487,6 +487,7 @@ Once the repository is toggled to Public on GitHub, the project is ready for sub
 |---|---|---|
 | **GitHub Repository** | `https://github.com/NaimurRahman-Niaz02/School-Admission-Portal` | Anonymous HTTP 200 OK verified |
 | **Repository Visibility** | **PUBLIC** | Anonymous curl response verified without credentials |
+| **Final Commit Hash** | `f26ac67` (`f26ac67ca932e01a0de599fb0287f0145338182f`) | Published and verified on GitHub `main` branch |
 | **Target Branch** | `main` | Synchronized fast-forward push |
 | **Git Working Tree** | **CLEAN** | `git status` reports nothing to commit, working tree clean |
 | **Secret Scanning** | **PASS** | 0 secrets, passwords, tokens, private keys, or confidential PDFs |
