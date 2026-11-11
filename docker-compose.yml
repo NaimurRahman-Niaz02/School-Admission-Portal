@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hsus_postgres
+    environment:
+      POSTGRES_USER: hsus_user
+      POSTGRES_PASSWORD: hsus_password
+      POSTGRES_DB: hsus_admission
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hsus_user -d hsus_admission"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hsus_backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: hsus_admission
+      POSTGRES_USER: hsus_user
+      POSTGRES_PASSWORD: hsus_password
+      HOLD_DURATION_SECONDS: 600
+      EXPIRATION_CHECK_INTERVAL_SECONDS: 5
+      SEED_DEMO_DATA: "true"
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080
+        VITE_USE_MOCK_API: "false"
+    container_name: hsus_frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
