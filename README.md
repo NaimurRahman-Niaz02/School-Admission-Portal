@@ -1,6 +1,6 @@
 # Hashmat Uddin High School Online Admission System (HSUS)
 
-A production-quality full-stack web application for school admissions with real-time seat reservation, first-come first-served queueing, concurrency control, and administrative analytics.
+A full-stack web application for school admissions featuring real-time seat reservation, first-come first-served queueing, database-level concurrency control, and administrative analytics developed for the Onnorokom Projukti Limited Assistant Software Engineer recruitment assessment.
 
 ---
 
@@ -28,9 +28,9 @@ flowchart LR
 
 ### Key Technology Stack
 - **Frontend**: React 19, React Router 7, Vite, Lucide React, vanilla CSS tokens matching original website.
-- **Backend**: C# .NET 10 Web API, Entity Framework Core, Npgsql PostgreSQL provider, Swashbuckle OpenAPI.
+- **Backend**: C# ASP.NET Core (.NET 10), Entity Framework Core 8.0.11, Npgsql PostgreSQL provider 8.0.11, Swashbuckle OpenAPI 6.6.2.
 - **Database**: PostgreSQL 16 Alpine, EF Core Code-First migrations, partial unique indexes, check constraints.
-- **Orchestration**: Docker & Docker Compose with persistent storage and container healthchecks.
+- **Orchestration**: Docker & Docker Compose with persistent storage, parameterized environment configuration, and container healthchecks.
 
 ---
 
@@ -81,10 +81,42 @@ When running via Docker Compose, PostgreSQL is automatically configured with the
 
 You **do not** need to manually run SQL scripts to create tables.
 - When the backend container boots up, it automatically applies all pending EF Core migrations (`DatabaseInitializer.InitializeAsync`).
-- If the database is fresh, it automatically populates standard admission classes for Session 27 (Class 6 through Class 10 Morning & Day shifts).
+- If the database is fresh and `SEED_DEMO_DATA=true` (the default in Docker Compose for evaluation), it automatically populates standard admission classes for Session 27 (Class 6 through Class 10 Morning & Day shifts). In production, set `SEED_DEMO_DATA=false`.
 - If tables already exist, seed data is safely skipped (idempotent).
 
-### 3. How to Connect to PostgreSQL and Inspect Data
+### 3. Environment Variables & Configuration
+
+The application is fully configurable via `.env` or Docker Compose environment variables:
+
+| Variable | Default Value | Description |
+|---|---|---|
+| `POSTGRES_DB` | `hsus_admission` | PostgreSQL database name |
+| `POSTGRES_USER` | `hsus_user` | PostgreSQL database username |
+| `POSTGRES_PASSWORD` | `hsus_password` | PostgreSQL database password |
+| `HOLD_DURATION_SECONDS` | `600` | Duration of temporary seat reservation (10 minutes) |
+| `EXPIRATION_CHECK_INTERVAL_SECONDS` | `5` | Frequency of background worker auto-reclaiming expired holds |
+| `SEED_DEMO_DATA` | `true` (Compose) / `false` (Prod) | Controls whether sample classes are seeded on an empty database |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated list of permitted CORS frontend origins |
+| `ASPNETCORE_ENVIRONMENT` | `Production` | ASP.NET Core environment profile |
+
+---
+
+## Concurrency Protection & Multi-Process Architecture
+
+The system enforces seat reservation limits and global single-admission rules exclusively at the **PostgreSQL database level**:
+- **Pessimistic Row-Level Locks**: Uses PostgreSQL `SELECT ... FOR UPDATE` with deterministic lock ordering (`students` row first, `admission_classes` row second), preventing deadlocks.
+- **Partial Unique Index**: `IX_AdmissionHolds_StudentId_ActiveOrConfirmed` on `(StudentId)` where `Status IN ('HELD', 'CONFIRMED')` guarantees at most one active or confirmed admission per candidate school-wide.
+- **Cross-Process Concurrency Safety**: Because locks and constraints reside within PostgreSQL itself, multiple backend processes or container replicas sharing the same database can operate concurrently without race conditions, double allocation, or memory synchronization bottlenecks.
+
+---
+
+## Authority Security & Prototype Note
+
+The authority portal is protected by a client-side passcode verification gate (`admin2026`). For this recruitment prototype, administrative APIs (`POST /classes`, `PUT /timeline`) are accessible to the frontend client. In a real-world enterprise deployment, server-side JWT authentication and Role-Based Access Control (RBAC) should be layered onto all administrative write endpoints.
+
+---
+
+## Beginner-Friendly Database Inspection Guide
 
 You can connect directly to the database running inside the Docker container using the built-in PostgreSQL command-line tool `psql`:
 

@@ -3,15 +3,15 @@ services:
     image: postgres:16-alpine
     container_name: hsus_postgres
     environment:
-      POSTGRES_USER: hsus_user
-      POSTGRES_PASSWORD: hsus_password
-      POSTGRES_DB: hsus_admission
+      POSTGRES_USER: ${POSTGRES_USER:-hsus_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hsus_password}
+      POSTGRES_DB: ${POSTGRES_DB:-hsus_admission}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hsus_user -d hsus_admission"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hsus_user} -d ${POSTGRES_DB:-hsus_admission}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -28,13 +28,14 @@ services:
     environment:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
-      POSTGRES_DB: hsus_admission
-      POSTGRES_USER: hsus_user
-      POSTGRES_PASSWORD: hsus_password
-      HOLD_DURATION_SECONDS: 600
-      EXPIRATION_CHECK_INTERVAL_SECONDS: 5
-      SEED_DEMO_DATA: "true"
-      ASPNETCORE_ENVIRONMENT: Production
+      POSTGRES_DB: ${POSTGRES_DB:-hsus_admission}
+      POSTGRES_USER: ${POSTGRES_USER:-hsus_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hsus_password}
+      HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
+      EXPIRATION_CHECK_INTERVAL_SECONDS: ${EXPIRATION_CHECK_INTERVAL_SECONDS:-5}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -44,7 +45,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_URL: http://localhost:8080
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
         VITE_USE_MOCK_API: "false"
     container_name: hsus_frontend
     depends_on:

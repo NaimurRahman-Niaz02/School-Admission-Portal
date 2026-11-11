@@ -22,18 +22,19 @@ In accordance with assignment guidelines, this document transparently describes 
    - Preserving visual fidelity, color tokens, responsive CSS breakpoints, SVG icons, and typography.
    - Creating comprehensive browser DOM and integration verification test suites.
 
-2. **Backend API Scaffolding (.NET 8 + EF Core 8)**:
+2. **Backend API Scaffolding (ASP.NET Core .NET 10 + EF Core 8)**:
    - Generating standard repository and controller boilerplate for RESTful endpoints (`/classes`, `/holds`, `/me/holds`, `/timeline`).
    - Defining Entity Framework Core entity classes and model configurations (`OnModelCreating`).
    - Constructing ProblemDetails exception mapping middleware for RFC 7807 compliance.
+   - Configuring environment allowlist CORS policies and demo data initialization controls.
 
 3. **Database Concurrency & Locking Strategy**:
    - Designing the deadlock-free lock acquisition order (`students` then `admission_classes`) using PostgreSQL raw SQL row locks (`FOR UPDATE`).
    - Implementing partial unique indexes in EF Core (`IX_AdmissionHolds_StudentId_ActiveOrConfirmed`).
 
-4. **Integration Testing**:
+4. **Integration Testing & Test Determinism**:
    - Writing the 20 automated integration test scenarios in `Hsus.Admission.IntegrationTests`, including multi-threaded concurrency bursts (`Task.WhenAll` with 25 concurrent client requests).
-   - Diagnosing and resolving cross-version runtime compatibility between .NET 10 host SDK and .NET 8 test host.
+   - Enhancing test determinism with dynamic 17-digit student ID generation (`GenerateTestStudentId()`) to eliminate cross-run database collisions.
 
 ---
 

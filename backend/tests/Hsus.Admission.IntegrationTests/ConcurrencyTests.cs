@@ -46,9 +46,10 @@ public class ConcurrencyTests
         var cls = await createRes.Content.ReadFromJsonAsync<ClassResponseDto>();
         Assert.NotNull(cls);
 
-        // 2. Prepare 25 distinct 17-digit student IDs
+        // 2. Prepare 25 distinct 17-digit student IDs with unique prefix per test run
+        var uniquePrefix = Random.Shared.NextInt64(2000000000000L, 2999999999999L);
         var studentIds = Enumerable.Range(1001, concurrentStudents)
-            .Select(i => $"2008999900000{i}")
+            .Select(i => $"{uniquePrefix:D13}{i:D4}")
             .ToList();
 
         var successHolds = new ConcurrentBag<HoldResponseDto>();
@@ -105,7 +106,8 @@ public class ConcurrencyTests
     {
         using var client = CreateClient();
         var uniqueSession = $"S_{Guid.NewGuid().ToString("N")[..8]}";
-        var studentId = "20089999999999999";
+        var randomPart = Random.Shared.NextInt64(1000000000000000L, 9999999999999999L);
+        var studentId = $"2{randomPart % 1000000000000000L:D15}9";
 
         // 1. Create 5 different classes with distinct grades in this unique session
         var classIds = new List<string>();

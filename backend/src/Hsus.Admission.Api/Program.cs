@@ -30,6 +30,10 @@ builder.Services.Configure<AdmissionOptions>(options =>
     {
         options.SeedDemoData = parsedSeed;
     }
+    else if (builder.Environment.IsProduction() && string.IsNullOrWhiteSpace(seedEnv))
+    {
+        options.SeedDemoData = false;
+    }
 });
 
 // 2. Resolve PostgreSQL Connection String from Environment Variables or Configuration
@@ -76,13 +80,22 @@ builder.Services.AddControllers()
         };
     });
 
-// 5. Configure CORS for Frontend Development and Docker Origins
+// 5. Configure CORS for Frontend Development and Production Origins
+var configuredOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]
+    ?? builder.Configuration["Cors:AllowedOrigins"];
+
+var allowedOrigins = (!string.IsNullOrWhiteSpace(configuredOrigins)
+    ? configuredOrigins.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    : new[] { "http://localhost:5173", "http://127.0.0.1:5173" })
+    .Distinct(StringComparer.OrdinalIgnoreCase)
+    .ToArray();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendCorsPolicy", policy =>
     {
         policy
-            .SetIsOriginAllowed(_ => true)
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .WithExposedHeaders("X-Student-Id");

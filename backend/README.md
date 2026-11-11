@@ -1,6 +1,6 @@
 # HSUS Online Admission System — Backend Service
 
-High-performance, production-ready RESTful API for Hashmat Uddin High School's Online Admission System built with **C# (.NET 10)**, **Entity Framework Core**, and **PostgreSQL 16**.
+RESTful API service for Hashmat Uddin High School's Online Admission System built with **C# ASP.NET Core (.NET 10)**, **Entity Framework Core 8.0.11**, and **PostgreSQL 16**.
 
 ---
 
@@ -10,7 +10,14 @@ High-performance, production-ready RESTful API for Hashmat Uddin High School's O
 - **PostgreSQL Row-Level Concurrency Control**: Strict pessimistic locking (`SELECT ... FOR UPDATE`) prevents over-allocation during concurrent seat reservation bursts.
 - **Global Single-Admission Rule**: Students (identified by unique 17-digit birth registration numbers) are restricted to at most one active `HELD` or `CONFIRMED` admission across all classes, enforced by application logic and PostgreSQL partial unique indexes (`IX_AdmissionHolds_StudentId_ActiveOrConfirmed`).
 - **Automated Hold Expiration**: 10-minute temporary seat hold reservation window automatically expired by an asynchronous background worker (`HoldExpirationBackgroundService`) and lazy real-time checks, instantly returning abandoned seats to the available pool.
+- **Configurable CORS Allowlist**: Replaced wildcard CORS with strict allowlist matching configured frontend origins (`http://localhost:5173`, `http://127.0.0.1:5173`).
 - **RESTful Endpoints & Swagger / OpenAPI**: Full OpenAPI documentation at `/swagger` with RFC 7807 `ProblemDetails` error formatting.
+
+---
+
+## Authority Security & Prototype Note
+
+The authority portal is protected by a client-side passcode verification gate (`admin2026`). For this recruitment prototype, administrative write endpoints (`POST /classes`, `PUT /timeline`) are directly accessible to the frontend without server-side JWT or bearer token validation. In a production enterprise deployment, a dedicated identity provider (e.g., ASP.NET Core Identity with JWT / OAuth2 / OpenID Connect) and Role-Based Access Control (RBAC) should be layered onto all administrative write endpoints.
 
 ---
 

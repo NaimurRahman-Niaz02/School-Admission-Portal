@@ -68,5 +68,17 @@
 ## 6. Authority Authentication Prototype
 - The frontend gate uses administrative passcodes (`admin2026`, `admin123`, `greenwood2026`) for client-side prototype demonstration.
 - Public navigation and footers strictly exclude authority links.
-- For production deployment, a dedicated JWT or OAuth2 identity provider (such as ASP.NET Core Identity with OpenID Connect) should be layered onto authority endpoints.
+- For production deployment, a dedicated JWT or OAuth2 identity provider (such as ASP.NET Core Identity with OpenID Connect) should be layered onto administrative write endpoints (`POST /classes`, `PUT /timeline`).
+
+---
+
+## 7. Multi-Backend Process Concurrency
+- Concurrency control and global single-admission invariants are enforced exclusively at the database layer using PostgreSQL transactional row-level locks (`SELECT ... FOR UPDATE`) and partial unique indexes (`IX_AdmissionHolds_StudentId_ActiveOrConfirmed`).
+- Because these locks and constraints reside within the PostgreSQL engine rather than backend in-memory data structures, multiple independent backend processes or Docker container replicas can safely share the same database without race conditions, deadlocks, or seat over-allocation.
+
+---
+
+## 8. Runtime Dependency Compatibility (.NET 10 & EF Core 8)
+- The application runtime targets `net10.0` running on official Microsoft .NET 10 preview container images (`mcr.microsoft.com/dotnet/sdk:10.0` and `mcr.microsoft.com/dotnet/aspnet:10.0`).
+- Entity Framework Core and Npgsql PostgreSQL provider dependencies are pinned to `8.0.11`. This combination ensures rock-solid schema migration execution and long-term stability with PostgreSQL 16 while avoiding breaking API changes in unreleased .NET 10 EF Core previews.
 

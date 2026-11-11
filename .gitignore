@@ -1,6 +1,29 @@
-node_modules
-dist
-dist-ssr
+# Build output and dependencies
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/TestResults/
+
+# Environment files
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Local and OS files
 *.local
 .DS_Store
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
+# IDE and Editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.sw?

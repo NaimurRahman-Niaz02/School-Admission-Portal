@@ -18,6 +18,12 @@ public class AdmissionApiTests
         return factory.CreateClient();
     }
 
+    private static string GenerateTestStudentId()
+    {
+        var randomPart = Random.Shared.NextInt64(1000000000000000L, 9999999999999999L);
+        return $"2{randomPart % 1000000000000000L:D15}1";
+    }
+
     private static CreateClassRequest CreateTestClass(
         string grade = "Class 6",
         string shift = "Morning",
@@ -109,7 +115,7 @@ public class AdmissionApiTests
         var cls = await createRes.Content.ReadFromJsonAsync<ClassResponseDto>();
         Assert.NotNull(cls);
 
-        var studentId = "20081234567890011";
+        var studentId = GenerateTestStudentId();
         var requestMsg = new HttpRequestMessage(HttpMethod.Post, $"/classes/{cls.Id}/holds");
         requestMsg.Headers.Add("X-Student-Id", studentId);
         requestMsg.Content = JsonContent.Create(new { studentId });
@@ -171,15 +177,18 @@ public class AdmissionApiTests
         var cls = await createRes.Content.ReadFromJsonAsync<ClassResponseDto>();
         Assert.NotNull(cls);
 
+        var student1 = GenerateTestStudentId();
+        var student2 = GenerateTestStudentId();
+
         // Student 1 reserves the only seat
         var msg1 = new HttpRequestMessage(HttpMethod.Post, $"/classes/{cls.Id}/holds");
-        msg1.Headers.Add("X-Student-Id", "20081234567890021");
+        msg1.Headers.Add("X-Student-Id", student1);
         var res1 = await client.SendAsync(msg1);
         Assert.Equal(HttpStatusCode.Created, res1.StatusCode);
 
         // Student 2 attempts to reserve full class
         var msg2 = new HttpRequestMessage(HttpMethod.Post, $"/classes/{cls.Id}/holds");
-        msg2.Headers.Add("X-Student-Id", "20081234567890022");
+        msg2.Headers.Add("X-Student-Id", student2);
         var res2 = await client.SendAsync(msg2);
 
         Assert.Equal(HttpStatusCode.Conflict, res2.StatusCode);
@@ -191,7 +200,7 @@ public class AdmissionApiTests
     {
         using var client = CreateClient();
         var session = $"TestSession_{Guid.NewGuid().ToString("N")[..8]}";
-        var studentId = "20081234567890031";
+        var studentId = GenerateTestStudentId();
 
         var resA = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 6", "Morning", "General", 20, session));
         Assert.Equal(HttpStatusCode.Created, resA.StatusCode);
@@ -220,7 +229,7 @@ public class AdmissionApiTests
     {
         using var client = CreateClient();
         var session = $"TestSession_{Guid.NewGuid().ToString("N")[..8]}";
-        var studentId = "20081234567890041";
+        var studentId = GenerateTestStudentId();
 
         var resA = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 9", "Morning", "Science", 20, session));
         Assert.Equal(HttpStatusCode.Created, resA.StatusCode);
@@ -234,6 +243,7 @@ public class AdmissionApiTests
         var holdMsg = new HttpRequestMessage(HttpMethod.Post, $"/classes/{c1!.Id}/holds");
         holdMsg.Headers.Add("X-Student-Id", studentId);
         var holdRes = await client.SendAsync(holdMsg);
+        Assert.Equal(HttpStatusCode.Created, holdRes.StatusCode);
         var hold = await holdRes.Content.ReadFromJsonAsync<HoldResponseDto>();
 
         var confirmMsg = new HttpRequestMessage(HttpMethod.Post, $"/holds/{hold!.HoldId}/confirm");
@@ -254,7 +264,7 @@ public class AdmissionApiTests
     {
         // Configure short 1-second hold duration
         using var client = CreateClient(holdDurationSeconds: 1);
-        var studentId = "20081234567890051";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 8", "Morning", "General", 10));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -284,7 +294,7 @@ public class AdmissionApiTests
     public async Task Test10_ConfirmationBeforeExpiration_ChangesStatusToConfirmed()
     {
         using var client = CreateClient();
-        var studentId = "20081234567890061";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 7", "Morning", "General", 15));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -317,7 +327,7 @@ public class AdmissionApiTests
     public async Task Test11_ConfirmationAfterExpiration_Returns409Conflict()
     {
         using var client = CreateClient(holdDurationSeconds: 1);
-        var studentId = "20081234567890071";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 6", "Day", "General", 15));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -344,7 +354,7 @@ public class AdmissionApiTests
     public async Task Test12_RepeatedConfirmation_IsIdempotentAndDoesNotDoubleCount()
     {
         using var client = CreateClient();
-        var studentId = "20081234567890081";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 10", "Morning", "Science", 25));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -379,7 +389,7 @@ public class AdmissionApiTests
     public async Task Test13_ApplicationCancellation_Returns204AndMarksCancelled()
     {
         using var client = CreateClient();
-        var studentId = "20081234567890091";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 8", "Day", "General", 20));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -411,8 +421,8 @@ public class AdmissionApiTests
     public async Task Test14_StudentDataIsolation_StudentCannotAccessOtherStudentsHolds()
     {
         using var client = CreateClient();
-        var studentA = "20081234567890101";
-        var studentB = "20081234567890102";
+        var studentA = GenerateTestStudentId();
+        var studentB = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 6", "Morning", "General", 20));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -485,7 +495,7 @@ public class AdmissionApiTests
     public async Task Test16_SeatReleaseAfterExpiration_RestoresAvailableSeatsAndAllowsReapplication()
     {
         using var client = CreateClient(holdDurationSeconds: 1);
-        var studentId = "20081234567890111";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 7", "Morning", "General", 1));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -517,7 +527,7 @@ public class AdmissionApiTests
     public async Task Test17_SeatReleaseAfterCancellation_RestoresAvailableSeatsAndAllowsReapplication()
     {
         using var client = CreateClient();
-        var studentId = "20081234567890121";
+        var studentId = GenerateTestStudentId();
 
         var res = await client.PostAsJsonAsync("/classes", CreateTestClass("Class 8", "Day", "General", 1));
         Assert.Equal(HttpStatusCode.Created, res.StatusCode);
@@ -552,7 +562,7 @@ public class AdmissionApiTests
     [Fact]
     public async Task Test20_DatabasePersistence_RecordsSurviveNewClientInstance()
     {
-        var studentId = "20081234567890131";
+        var studentId = GenerateTestStudentId();
         string holdId;
         string classId;
 
