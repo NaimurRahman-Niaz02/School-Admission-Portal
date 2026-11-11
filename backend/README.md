@@ -1,6 +1,6 @@
 # HSUS Online Admission System — Backend Service
 
-High-performance, production-ready RESTful API for Hashmat Uddin High School's Online Admission System built with **C# (.NET 8)**, **Entity Framework Core 8**, and **PostgreSQL 16**.
+High-performance, production-ready RESTful API for Hashmat Uddin High School's Online Admission System built with **C# (.NET 10)**, **Entity Framework Core**, and **PostgreSQL 16**.
 
 ---
 

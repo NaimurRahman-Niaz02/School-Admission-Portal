@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hsus.Admission.IntegrationTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85efc016aaea2c6809fa50ca4770953c1d998405")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bb870dde376e2696337b35126799f29de3767ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hsus.Admission.IntegrationTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hsus.Admission.IntegrationTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

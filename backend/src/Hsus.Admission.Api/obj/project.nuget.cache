@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1ezpa7CDHxw=",
+  "dgSpecHash": "dEjSsn2Urq0=",
   "success": true,
   "projectFilePath": "/home/naim/WorkSpace/Projects/assessment/OnnoRokom/HSUS/backend/src/Hsus.Admission.Api/Hsus.Admission.Api.csproj",
   "expectedPackageFiles": [
@@ -32,10 +32,17 @@
     "/tmp/dotnet/.nuget/packages/system.composition.convention/6.0.0/system.composition.convention.6.0.0.nupkg.sha512",
     "/tmp/dotnet/.nuget/packages/system.composition.hosting/6.0.0/system.composition.hosting.6.0.0.nupkg.sha512",
     "/tmp/dotnet/.nuget/packages/system.composition.runtime/6.0.0/system.composition.runtime.6.0.0.nupkg.sha512",
-    "/tmp/dotnet/.nuget/packages/system.composition.typedparts/6.0.0/system.composition.typedparts.6.0.0.nupkg.sha512",
-    "/tmp/dotnet/.nuget/packages/microsoft.netcore.app.ref/8.0.33/microsoft.netcore.app.ref.8.0.33.nupkg.sha512",
-    "/tmp/dotnet/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.33/microsoft.aspnetcore.app.ref.8.0.33.nupkg.sha512",
-    "/tmp/dotnet/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.33/microsoft.netcore.app.host.linux-x64.8.0.33.nupkg.sha512"
+    "/tmp/dotnet/.nuget/packages/system.composition.typedparts/6.0.0/system.composition.typedparts.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "projectPath": "/home/naim/WorkSpace/Projects/assessment/OnnoRokom/HSUS/backend/src/Hsus.Admission.Api/Hsus.Admission.Api.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/naim/WorkSpace/Projects/assessment/OnnoRokom/HSUS/backend/src/Hsus.Admission.Api/Hsus.Admission.Api.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

@@ -13,7 +13,7 @@ flowchart LR
     end
 
     subgraph Service ["Backend API (Port 8080)"]
-        API[".NET 8 Web API\nControllers & Services"]
+        API[".NET 10 Web API\nControllers & Services"]
         Worker["Hold Expiration Worker\n(5s Interval)"]
     end
 
@@ -28,7 +28,7 @@ flowchart LR
 
 ### Key Technology Stack
 - **Frontend**: React 19, React Router 7, Vite, Lucide React, vanilla CSS tokens matching original website.
-- **Backend**: C# .NET 8 Web API, Entity Framework Core 8, Npgsql PostgreSQL provider, Swashbuckle OpenAPI.
+- **Backend**: C# .NET 10 Web API, Entity Framework Core, Npgsql PostgreSQL provider, Swashbuckle OpenAPI.
 - **Database**: PostgreSQL 16 Alpine, EF Core Code-First migrations, partial unique indexes, check constraints.
 - **Orchestration**: Docker & Docker Compose with persistent storage and container healthchecks.
 
@@ -226,7 +226,7 @@ cd frontend && npm test
 
 ## Verification & Deliverables Checklist
 
-- [x] Full .NET 8 Web API with C# clean layered architecture.
+- [x] Full .NET 10 Web API with C# clean layered architecture.
 - [x] PostgreSQL database design with EF Core Code-First migrations.
 - [x] Strict 17-digit birth registration number student validation.
 - [x] Concurrency protection via PostgreSQL pessimistic row-level locking (`FOR UPDATE`).
@@ -234,7 +234,7 @@ cd frontend && npm test
 - [x] 10-minute hold expiration with periodic background worker.
 - [x] 20 automated backend integration tests executed against real PostgreSQL (100% pass rate).
 - [x] 88 frontend automated tests verified (100% pass rate).
-- [x] Dockerfile for backend (.NET 8 multi-stage build).
+- [x] Dockerfile for backend (.NET 10 multi-stage build).
 - [x] Dockerfile for frontend (React 19 + Nginx Alpine).
 - [x] Root `docker-compose.yml` orchestrating postgres, backend, and frontend.
 - [x] Comprehensive beginner-friendly database setup & inspection documentation.

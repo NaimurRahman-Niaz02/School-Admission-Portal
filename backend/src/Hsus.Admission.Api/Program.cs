@@ -118,6 +118,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+app.MapGet("/swagger", () => Results.Redirect("/swagger/index.html"));
 app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
 
 app.MapControllers();

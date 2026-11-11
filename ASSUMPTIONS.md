@@ -1,7 +1,7 @@
 # System Architecture Decisions & Technical Assumptions
 
 **Project**: Hashmat Uddin High School Online Admission System (HSUS)  
-**Technology**: React 19 + C# .NET 8 Web API + PostgreSQL 16 + Docker Compose
+**Technology**: React 19 + C# .NET 10 Web API + PostgreSQL 16 + Docker Compose
 
 ---
 
